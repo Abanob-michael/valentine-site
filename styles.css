@@ -1,0 +1,215 @@
+:root{
+  --bg1:#070812;
+  --bg2:#120a1b;
+  --card: rgba(255,255,255,.08);
+  --stroke: rgba(255,255,255,.12);
+  --text: rgba(255,255,255,.92);
+  --muted: rgba(255,255,255,.70);
+  --accent:#ff4d8d;
+  --accent2:#a66bff;
+  --shadow: 0 20px 60px rgba(0,0,0,.45);
+  --radius: 22px;
+  --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+}
+
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:var(--font);
+  color:var(--text);
+  background:
+    radial-gradient(1200px 800px at 20% 10%, rgba(255,77,141,.22), transparent 50%),
+    radial-gradient(900px 700px at 80% 20%, rgba(166,107,255,.20), transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+  overflow:hidden;
+}
+
+#hearts{
+  position:fixed;
+  inset:0;
+  width:100%;
+  height:100%;
+  z-index:0;
+}
+
+.topbar{
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:3;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  padding:16px 20px;
+  backdrop-filter: blur(10px);
+  background: rgba(0,0,0,.18);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.brand{
+  font-weight:800;
+  letter-spacing:.4px;
+  opacity:.95;
+}
+
+.container{
+  position:relative;
+  z-index:2;
+  height:100%;
+  display:grid;
+  place-items:center;
+  padding:78px 18px 18px;
+}
+
+.card{
+  width:min(920px, 100%);
+  background: var(--card);
+  border:1px solid var(--stroke);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding:28px;
+  backdrop-filter: blur(14px);
+}
+
+.hero .pill{
+  display:inline-flex;
+  gap:8px;
+  align-items:center;
+  padding:8px 14px;
+  border-radius:999px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.14);
+  color: var(--muted);
+  width: fit-content;
+  margin-bottom:14px;
+}
+
+h1{
+  margin:0 0 10px;
+  font-size: clamp(28px, 4.5vw, 46px);
+  line-height:1.05;
+}
+.accent{
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+
+.subtitle{
+  margin:0 0 18px;
+  color:var(--muted);
+  font-size: 15.5px;
+  max-width: 62ch;
+}
+
+.grid{
+  display:grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap:14px;
+  margin-top:12px;
+}
+
+.mini-card{
+  background: rgba(0,0,0,.14);
+  border:1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding:14px 14px 12px;
+}
+
+.mini-card h3{
+  margin:0 0 8px;
+  font-size: 14px;
+  letter-spacing:.2px;
+  color: rgba(255,255,255,.88);
+}
+.mini-card p{
+  margin:0;
+  color: var(--muted);
+  font-size: 14px;
+  line-height:1.45;
+}
+
+.countdown{
+  font-weight:800;
+  font-size: 20px !important;
+  color: rgba(255,255,255,.92) !important;
+  margin-top:6px !important;
+}
+.hint{margin-top:8px !important; font-size:12px !important; opacity:.75;}
+
+.actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top:16px;
+}
+
+.btn{
+  border:none;
+  cursor:pointer;
+  padding:10px 14px;
+  border-radius: 999px;
+  font-weight:700;
+  background: rgba(255,255,255,.14);
+  color: var(--text);
+  transition: transform .12s ease, background .12s ease;
+}
+.btn:hover{transform: translateY(-1px); background: rgba(255,255,255,.18);}
+.btn:active{transform: translateY(0px);}
+
+.btn.pink{
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  color: white;
+}
+.btn.ghost{
+  background: rgba(0,0,0,.18);
+  border:1px solid rgba(255,255,255,.12);
+}
+
+.footer{
+  display:flex;
+  gap:10px;
+  align-items:center;
+  margin-top:18px;
+  color: rgba(255,255,255,.72);
+  font-size: 13px;
+}
+.dot{opacity:.55}
+
+.modal{
+  position:fixed;
+  inset:0;
+  display:none;
+  place-items:center;
+  z-index:4;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(8px);
+}
+.modal.show{display:grid;}
+.modal-card{
+  width:min(520px, calc(100% - 32px));
+  background: rgba(20,12,30,.90);
+  border:1px solid rgba(255,255,255,.16);
+  border-radius: 18px;
+  box-shadow: var(--shadow);
+  padding:18px;
+  position:relative;
+}
+.modal-card h2{margin:0 0 10px;}
+.modal-card p{margin:0 0 12px; color: var(--muted);}
+
+.close{
+  position:absolute;
+  top:10px;
+  right:10px;
+}
+
+.yesno{display:flex; gap:10px; flex-wrap:wrap;}
+.result{margin-top:12px !important; font-weight:800; color: rgba(255,255,255,.92) !important;}
+
+@media (max-width: 860px){
+  body{overflow:auto;}
+  #hearts{position:absolute;}
+  .grid{grid-template-columns:1fr; }
+}
