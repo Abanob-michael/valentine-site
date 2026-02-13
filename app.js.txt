@@ -1,0 +1,208 @@
+// =========================
+// Personalize via URL params:
+// ?name=Sara&from=Michael&msg=Your%20message%20here
+// =========================
+const params = new URLSearchParams(location.search);
+const herName = params.get("name") || "My Love";
+const fromName = params.get("from") || "Michael";
+const customMsg = params.get("msg");
+
+document.getElementById("herNameInline").textContent = herName;
+document.getElementById("herName").textContent = herName;
+document.getElementById("signature").textContent = `— ${fromName}`;
+if (customMsg) document.getElementById("message").textContent = customMsg;
+
+// ===== Countdown to Feb 14 (local time) =====
+function nextValentine() {
+  const now = new Date();
+  const year = now.getFullYear();
+  let target = new Date(year, 1, 14, 0, 0, 0); // Feb=1
+  if (now > target) target = new Date(year + 1, 1, 14, 0, 0, 0);
+  return target;
+}
+const targetDate = nextValentine();
+
+function tickCountdown(){
+  const now = new Date();
+  const diff = targetDate - now;
+  const el = document.getElementById("countdown");
+  if (diff <= 0){
+    el.textContent = "It’s Valentine’s Day! ❤️";
+    return;
+  }
+  const s = Math.floor(diff/1000);
+  const days = Math.floor(s/86400);
+  const hrs = Math.floor((s%86400)/3600);
+  const mins = Math.floor((s%3600)/60);
+  const secs = s%60;
+  el.textContent = `${days}d ${hrs}h ${mins}m ${secs}s`;
+}
+setInterval(tickCountdown, 1000);
+tickCountdown();
+
+// ===== Modal gift =====
+const modal = document.getElementById("modal");
+const openGift = document.getElementById("openGift");
+const closeModal = document.getElementById("closeModal");
+const yesBtn = document.getElementById("yesBtn");
+const noBtn = document.getElementById("noBtn");
+const modalResult = document.getElementById("modalResult");
+
+function showModal(){
+  modal.classList.add("show");
+  modal.setAttribute("aria-hidden","false");
+  modalResult.textContent = "";
+}
+function hideModal(){
+  modal.classList.remove("show");
+  modal.setAttribute("aria-hidden","true");
+}
+
+openGift.addEventListener("click", showModal);
+closeModal.addEventListener("click", hideModal);
+modal.addEventListener("click", (e)=> { if(e.target === modal) hideModal(); });
+
+yesBtn.addEventListener("click", ()=>{
+  modalResult.textContent = `YAY! 💖 I’m the luckiest. Happy Valentine’s Day, ${herName}!`;
+  confettiBurst();
+});
+noBtn.addEventListener("click", ()=>{
+  // playful "run away" button
+  const x = Math.random()*240 - 120;
+  const y = Math.random()*160 - 80;
+  noBtn.style.transform = `translate(${x}px, ${y}px)`;
+});
+
+// ===== Copy message button =====
+document.getElementById("copyLinkBtn").addEventListener("click", async ()=>{
+  const text = `Happy Valentine’s Day, ${herName} ❤️\n\n${document.getElementById("message").textContent}\n\n— ${fromName}`;
+  try{
+    await navigator.clipboard.writeText(text);
+    toast("Copied! 📋");
+  }catch{
+    toast("Copy failed 😅");
+  }
+});
+
+// ===== Optional music toggle (if you add music.mp3 and uncomment audio in HTML) =====
+const toggleMusic = document.getElementById("toggleMusic");
+const bgm = document.getElementById("bgm");
+let playing = false;
+toggleMusic.addEventListener("click", ()=>{
+  if(!bgm){ toast("Add music.mp3 then uncomment <audio> 🎵"); return; }
+  playing = !playing;
+  if(playing){ bgm.play(); toggleMusic.textContent = "🔊 Music"; }
+  else { bgm.pause(); toggleMusic.textContent = "🔈 Music"; }
+});
+
+// ===== Simple toast =====
+let toastTimer = null;
+function toast(msg){
+  clearTimeout(toastTimer);
+  let t = document.getElementById("toast");
+  if(!t){
+    t = document.createElement("div");
+    t.id = "toast";
+    t.style.position="fixed";
+    t.style.bottom="18px";
+    t.style.left="50%";
+    t.style.transform="translateX(-50%)";
+    t.style.padding="10px 14px";
+    t.style.borderRadius="999px";
+    t.style.background="rgba(0,0,0,.55)";
+    t.style.border="1px solid rgba(255,255,255,.12)";
+    t.style.backdropFilter="blur(8px)";
+    t.style.color="rgba(255,255,255,.92)";
+    t.style.zIndex="10";
+    t.style.fontWeight="700";
+    document.body.appendChild(t);
+  }
+  t.textContent = msg;
+  t.style.opacity="1";
+  toastTimer = setTimeout(()=> t.style.opacity="0", 1400);
+}
+
+// ===== Confetti (lightweight) =====
+document.getElementById("confettiBtn").addEventListener("click", confettiBurst);
+
+function confettiBurst(){
+  const n = 120;
+  for(let i=0;i<n;i++){
+    const p = document.createElement("span");
+    p.textContent = Math.random() > 0.5 ? "💖" : "✨";
+    p.style.position="fixed";
+    p.style.left = (window.innerWidth*0.5 + (Math.random()*120-60))+"px";
+    p.style.top = (window.innerHeight*0.4 + (Math.random()*80-40))+"px";
+    p.style.fontSize = (14 + Math.random()*10)+"px";
+    p.style.zIndex="9";
+    p.style.pointerEvents="none";
+    document.body.appendChild(p);
+
+    const dx = (Math.random()*2-1)*240;
+    const dy = (Math.random()*-1)*360 - 120;
+    const rot = (Math.random()*2-1)*720;
+    p.animate([
+      { transform:`translate(0,0) rotate(0deg)`, opacity:1 },
+      { transform:`translate(${dx}px, ${dy}px) rotate(${rot}deg)`, opacity:0 }
+    ], { duration: 900 + Math.random()*600, easing: "cubic-bezier(.2,.7,.2,1)" });
+
+    setTimeout(()=>p.remove(), 1700);
+  }
+}
+
+// ===== Hearts background (canvas) =====
+const canvas = document.getElementById("hearts");
+const ctx = canvas.getContext("2d");
+let W=0,H=0;
+
+function resize(){
+  W = canvas.width = window.innerWidth * devicePixelRatio;
+  H = canvas.height = window.innerHeight * devicePixelRatio;
+  canvas.style.width = window.innerWidth+"px";
+  canvas.style.height = window.innerHeight+"px";
+}
+window.addEventListener("resize", resize);
+resize();
+
+const hearts = Array.from({length: 65}, () => makeHeart());
+function makeHeart(){
+  return {
+    x: Math.random()*W,
+    y: Math.random()*H,
+    r: (6+Math.random()*14)*devicePixelRatio,
+    vy: (0.3+Math.random()*1.0)*devicePixelRatio,
+    vx: (Math.random()*0.6-0.3)*devicePixelRatio,
+    a: 0.15+Math.random()*0.35
+  };
+}
+
+function drawHeart(x,y,r,alpha){
+  ctx.save();
+  ctx.translate(x,y);
+  ctx.globalAlpha = alpha;
+  ctx.beginPath();
+  const s = r/16;
+  ctx.moveTo(0, 6*s);
+  ctx.bezierCurveTo(0, 0, -8*s, 0, -8*s, 6*s);
+  ctx.bezierCurveTo(-8*s, 10*s, -4*s, 14*s, 0, 16*s);
+  ctx.bezierCurveTo(4*s, 14*s, 8*s, 10*s, 8*s, 6*s);
+  ctx.bezierCurveTo(8*s, 0, 0, 0, 0, 6*s);
+  ctx.closePath();
+  ctx.fillStyle = "white";
+  ctx.fill();
+  ctx.restore();
+}
+
+function loop(){
+  ctx.clearRect(0,0,W,H);
+  for(const h of hearts){
+    h.y += h.vy;
+    h.x += h.vx;
+    if(h.y - h.r > H) { h.y = -h.r; h.x = Math.random()*W; }
+    if(h.x < -h.r) h.x = W + h.r;
+    if(h.x > W + h.r) h.x = -h.r;
+    drawHeart(h.x,h.y,h.r,h.a);
+  }
+  requestAnimationFrame(loop);
+}
+loop();

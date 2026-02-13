@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Happy Valentine’s Day ❤️</title>
+  <meta name="description" content="A little Valentine surprise 💌" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <canvas id="hearts"></canvas>
+
+  <header class="topbar">
+    <div class="brand">💘 Valentine</div>
+    <button id="toggleMusic" class="btn ghost" type="button" aria-label="Toggle music">
+      🔈 Music
+    </button>
+  </header>
+
+  <main class="container">
+    <section class="card hero">
+      <div class="pill">For <span id="herNameInline">My Love</span> ✨</div>
+
+      <h1>
+        Happy Valentine’s Day
+        <span class="accent" id="herName">❤️</span>
+      </h1>
+
+      <p class="subtitle">
+        I made this little page just to say…
+        <strong>You mean the world to me.</strong>
+      </p>
+
+      <div class="grid">
+        <div class="mini-card">
+          <h3>💌 A note</h3>
+          <p id="message">
+            Every day with you feels like my favorite chapter. Thank you for being you.
+          </p>
+        </div>
+
+        <div class="mini-card">
+          <h3>⏳ Countdown</h3>
+          <p class="countdown" id="countdown">Loading…</p>
+          <p class="hint">To Feb 14 (your local time)</p>
+        </div>
+
+        <div class="mini-card">
+          <h3>🎁 Surprise</h3>
+          <p>Click the button to open your gift ✨</p>
+          <button id="openGift" class="btn" type="button">Open Gift</button>
+        </div>
+      </div>
+
+      <div class="actions">
+        <button id="confettiBtn" class="btn pink" type="button">Celebrate 🎉</button>
+        <button id="copyLinkBtn" class="btn ghost" type="button">Copy Message 📋</button>
+      </div>
+
+      <footer class="footer">
+        <span>Made with ❤️</span>
+        <span class="dot">•</span>
+        <span id="signature">— Michael</span>
+      </footer>
+    </section>
+  </main>
+
+  <!-- Gift Modal -->
+  <div id="modal" class="modal" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-modal="true" aria-label="Gift modal">
+      <button id="closeModal" class="btn ghost close" type="button">✕</button>
+      <h2>🌹 Your Gift</h2>
+      <p>
+        You’re my favorite person, my calm, and my chaos in the best way.
+      </p>
+      <div class="yesno">
+        <button id="yesBtn" class="btn">Be my Valentine? 💖</button>
+        <button id="noBtn" class="btn ghost">No 🙈</button>
+      </div>
+      <p id="modalResult" class="result"></p>
+    </div>
+  </div>
+
+  <!-- OPTIONAL tiny audio (replace with your own mp3 if you want) -->
+  <!-- Put a file named "music.mp3" next to these files, then uncomment: -->
+  <!-- <audio id="bgm" src="music.mp3" loop preload="none"></audio> -->
+
+  <script src="app.js"></script>
+</body>
+</html>
